@@ -10,5 +10,5 @@ class Teacher(models.Model):
 
 
 class Group(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, null=False)
     curator = models.ForeignKey(Teacher, on_delete=models.CASCADE)
