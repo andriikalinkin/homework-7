@@ -5,7 +5,7 @@ from django.db import models
 class Teacher(models.Model):
     first_name = models.CharField(max_length=50, null=False)
     last_name = models.CharField(max_length=50, null=False)
-    birth_date = models.DateField(null=False)
+    birthdate = models.DateField(null=False)
     subject = models.CharField(max_length=255)
 
 
