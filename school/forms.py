@@ -2,24 +2,26 @@ import re
 
 from django import forms
 
+from .models import Teacher, Group
+
 
 class TeacherForm(forms.Form):
     first_name = forms.CharField(
         label="First name:",
-        # max_length=50,
         widget=forms.TextInput(attrs={"placeholder": "Name"}),
     )
+
     last_name = forms.CharField(
         label="Last name:",
-        # max_length=50,
         widget=forms.TextInput(attrs={"placeholder": "Surname"}),
     )
+
     birthdate = forms.DateField(
         label="Birthdate:", widget=forms.TextInput(attrs={"placeholder": "YYYY-MM-DD"})
     )
+
     subject = forms.CharField(
         label="Subject:",
-        # max_length=50,
         widget=forms.TextInput(attrs={"placeholder": "Subject"}),
     )
 
@@ -41,5 +43,29 @@ class TeacherForm(forms.Form):
         subject = cleaned_data.get("subject")
         if len(subject) > 50:
             raise forms.ValidationError("Subject should be 50 characters or less.")
+
+        return cleaned_data
+
+
+class GroupForm(forms.Form):
+    name = forms.CharField(
+        label="Name:",
+        widget=forms.TextInput(attrs={"placeholder": "Name"}),
+    )
+
+    curator = forms.ModelChoiceField(
+        label="Curator:",
+        queryset=Teacher.objects.all(),
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        name = cleaned_data.get("name")
+        if len(name) > 50:
+            raise forms.ValidationError("Name should be 50 characters or less.")
+        if name in Group.objects.values_list("name", flat=True):
+            raise forms.ValidationError("This group already exists.")
 
         return cleaned_data

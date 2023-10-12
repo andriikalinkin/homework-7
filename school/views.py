@@ -1,8 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from .forms import TeacherForm
-from .models import Teacher
+from .forms import TeacherForm, GroupForm
+from .models import Teacher, Group
 
 
 def index(request):
@@ -22,7 +22,7 @@ def teacher(request):
             teacher_create.save()
 
             return redirect("/teachers/")
-    else:
+    else:  # Verification form failed.
         form = TeacherForm()
 
     return render(request, "teacher_form.html", {"form": form})
@@ -30,12 +30,28 @@ def teacher(request):
 
 def teachers(request):
     all_teachers = Teacher.objects.all()
+
     return render(request, "teachers.html", {"all_teachers": all_teachers})
 
 
 def group(request):
-    return HttpResponse('<h1>"group/" page</h1>')
+    if request.method == "POST":
+        form = GroupForm(request.POST)
+        if form.is_valid():
+            group_create = Group.objects.create(
+                name=request.POST["name"],
+                curator=form.cleaned_data["curator"]
+            )
+            group_create.save()
+
+            return redirect("/groups/")
+    else:  # Verification form failed.
+        form = GroupForm()
+
+    return render(request, "group_form.html", {"form": form})
 
 
 def groups(request):
-    return HttpResponse('<h1>"groups/" page</h1>')
+    all_groups = Group.objects.all()
+
+    return render(request, "groups.html", {"all_groups": all_groups})
