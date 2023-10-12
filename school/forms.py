@@ -6,12 +6,12 @@ from django import forms
 class TeacherForm(forms.Form):
     first_name = forms.CharField(
         label="First name:",
-        max_length=50,
+        # max_length=50,
         widget=forms.TextInput(attrs={"placeholder": "Name"}),
     )
     last_name = forms.CharField(
         label="Last name:",
-        max_length=50,
+        # max_length=50,
         widget=forms.TextInput(attrs={"placeholder": "Surname"}),
     )
     birthdate = forms.DateField(
@@ -19,7 +19,7 @@ class TeacherForm(forms.Form):
     )
     subject = forms.CharField(
         label="Subject:",
-        max_length=255,
+        # max_length=50,
         widget=forms.TextInput(attrs={"placeholder": "Subject"}),
     )
 
