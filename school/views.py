@@ -22,8 +22,8 @@ def teacher(request):
             teacher_create.save()
 
             return redirect("/teachers/")
-    else:  # Verification form failed.
-        form = TeacherForm()
+
+    form = TeacherForm()  # Verification form failed.
 
     return render(request, "teacher_form.html", {"form": form})
 
@@ -45,8 +45,8 @@ def group(request):
             group_create.save()
 
             return redirect("/groups/")
-    else:  # Verification form failed.
-        form = GroupForm()
+
+    form = GroupForm()  # Verification form failed.
 
     return render(request, "group_form.html", {"form": form})
 
