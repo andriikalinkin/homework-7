@@ -12,3 +12,9 @@ class Teacher(models.Model):
 class Group(models.Model):
     name = models.CharField(max_length=50, null=False)
     curator = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+
+
+class Student(models.Model):
+    first_name = models.CharField(max_length=50, null=False)
+    last_name = models.CharField(max_length=50, null=False)
+    groups = models.ManyToManyField(Group)
