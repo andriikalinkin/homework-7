@@ -5,10 +5,6 @@ from .forms import TeacherForm, GroupForm
 from .models import Teacher, Group
 
 
-def index(request):
-    return HttpResponse("<h1>Homework-6 index page</h1>")
-
-
 def teacher(request):
     if request.method == "POST":
         form = TeacherForm(request.POST)
