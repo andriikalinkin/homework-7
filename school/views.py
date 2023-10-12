@@ -1,7 +1,8 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
-from school.forms import TeacherForm
+from .forms import TeacherForm
+from .models import Teacher
 
 
 def index(request):
@@ -12,16 +13,24 @@ def teacher(request):
     if request.method == "POST":
         form = TeacherForm(request.POST)
         if form.is_valid():
-            # INSERT INTO DB
-            return HttpResponse("<h1>You just add a teacher!</h1>")
-    else:  # Render the form
+            teacher_create = Teacher.objects.create(
+                first_name=request.POST["first_name"],
+                last_name=request.POST["last_name"],
+                birthdate=request.POST["birthdate"],
+                subject=request.POST["subject"],
+            )
+            teacher_create.save()
+
+            return redirect("/teachers/")
+    else:
         form = TeacherForm()
 
     return render(request, "teacher_form.html", {"form": form})
 
 
 def teachers(request):
-    return HttpResponse('<h1>"teachers/" page</h1>')
+    all_teachers = Teacher.objects.all()
+    return render(request, "teachers.html", {"all_teachers": all_teachers})
 
 
 def group(request):
