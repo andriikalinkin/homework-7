@@ -1,11 +1,10 @@
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from .forms import TeacherForm, GroupForm
 from .models import Teacher, Group
 
 
-def teacher(request):
+def teacher_add(request):
     if request.method == "POST":
         form = TeacherForm(request.POST)
         if form.is_valid():
@@ -19,9 +18,9 @@ def teacher(request):
 
             return redirect("/teachers/")
 
-    form = TeacherForm()  # Verification form failed.
+    form = TeacherForm()
 
-    return render(request, "teacher_form.html", {"form": form})
+    return render(request, "teacher_add.html", {"form": form})
 
 
 def teachers(request):
@@ -30,7 +29,7 @@ def teachers(request):
     return render(request, "teachers.html", {"all_teachers": all_teachers})
 
 
-def group(request):
+def group_add(request):
     if request.method == "POST":
         form = GroupForm(request.POST)
         if form.is_valid():
@@ -42,9 +41,9 @@ def group(request):
 
             return redirect("/groups/")
 
-    form = GroupForm()  # Verification form failed.
+    form = GroupForm()
 
-    return render(request, "group_form.html", {"form": form})
+    return render(request, "group_add.html", {"form": form})
 
 
 def groups(request):
