@@ -1,32 +1,14 @@
-import re
-
 from django import forms
 
 from .models import Teacher, Group
 
 
-class TeacherForm(forms.Form):
-    first_name = forms.CharField(
-        label="First name:",
-        widget=forms.TextInput(attrs={"placeholder": "Name"}),
-    )
-
-    last_name = forms.CharField(
-        label="Last name:",
-        widget=forms.TextInput(attrs={"placeholder": "Surname"}),
-    )
-
-    birthdate = forms.DateField(
-        label="Birthdate:", widget=forms.TextInput(attrs={"placeholder": "YYYY-MM-DD"})
-    )
-
-    subject = forms.CharField(
-        label="Subject:",
-        widget=forms.TextInput(attrs={"placeholder": "Subject"}),
-    )
+class TeacherAddEditForm(forms.ModelForm):
+    class Meta:
+        model = Teacher
+        fields = ["first_name", "last_name", "birthdate", "subject"]
 
     def clean(self):
-        """Checking that `first_name`, `last_name`, subject` length under 51 characters."""
         cleaned_data = super().clean()
 
         first_name = cleaned_data.get("first_name")
@@ -34,17 +16,23 @@ class TeacherForm(forms.Form):
             raise forms.ValidationError("Name should be 50 characters or less.")
 
         last_name = cleaned_data.get("last_name")
-        if len(last_name) > 50:
+        if len(last_name) > 10:
             raise forms.ValidationError("Surname should be 50 characters or less.")
-
-        # birthdate = cleaned_data.get("birthdate")
-        # if not re.match(r"^\d{4}-\d{2}-\d{2}$", str(birthdate)):
-        #     raise forms.ValidationError("Birthdate should be in the format YYYY-MM-DD.")
 
         subject = cleaned_data.get("subject")
         if len(subject) > 50:
             raise forms.ValidationError("Subject should be 50 characters or less.")
 
+        return cleaned_data
+
+
+class TeacherDeleteForm(forms.Form):
+    teacher_id = forms.CharField(label="Teacher's ID:")
+
+    def clean_teacher_id(self):
+        cleaned_data = self.cleaned_data.get("teacher_id")
+        if not Teacher.objects.filter(id=cleaned_data).exists():
+            raise forms.ValidationError("Invalid ID.")
         return cleaned_data
 
 
