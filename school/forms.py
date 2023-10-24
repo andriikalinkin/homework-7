@@ -31,6 +31,8 @@ class TeacherDeleteForm(forms.Form):
 
     def clean_teacher_id(self):
         cleaned_data = self.cleaned_data.get("teacher_id")
+        if not cleaned_data.isdigit():
+            raise forms.ValidationError("Use int() only.")
         if not Teacher.objects.filter(id=cleaned_data).exists():
             raise forms.ValidationError("Invalid ID.")
         return cleaned_data

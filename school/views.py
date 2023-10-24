@@ -37,10 +37,11 @@ def teacher_delete(request):
     if request.method == "POST":
         form = TeacherDeleteForm(request.POST)
         if form.is_valid():
-            Teacher.delete(request.POST["teacher_id"])
+            teacher = Teacher.objects.get(pk=request.POST["teacher_id"])
+            teacher.delete()
             return redirect("teachers")
         return render(request, "teacher_delete.html", {"form": form})
-    form = TeacherDeleteForm(request.POST)
+    form = TeacherDeleteForm()
     return render(request, "teacher_delete.html", {"form": form})
 
 
