@@ -17,10 +17,17 @@ def teacher_add(request):
             teacher_create.save()
 
             return redirect("/teachers/")
-
     form = TeacherForm()
 
     return render(request, "teacher_add.html", {"form": form})
+
+
+def teacher_edit(request, pk):
+    pass
+
+
+def teacher_delete(request, pk):
+    pass
 
 
 def teachers(request):
@@ -29,7 +36,7 @@ def teachers(request):
     return render(request, "teachers.html", {"all_teachers": all_teachers})
 
 
-def group_add(request):
+def group(request):
     if request.method == "POST":
         form = GroupForm(request.POST)
         if form.is_valid():
@@ -43,10 +50,18 @@ def group_add(request):
 
     form = GroupForm()
 
-    return render(request, "group_add.html", {"form": form})
+    return render(request, "group.html", {"form": form})
 
 
 def groups(request):
     all_groups = Group.objects.all()
 
     return render(request, "groups.html", {"all_groups": all_groups})
+
+
+def student(request):
+    pass
+
+
+def students(request):
+    pass

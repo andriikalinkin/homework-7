@@ -26,6 +26,7 @@ class TeacherForm(forms.Form):
     )
 
     def clean(self):
+        """Checking that `first_name`, `last_name`, subject` length under 51 characters."""
         cleaned_data = super().clean()
 
         first_name = cleaned_data.get("first_name")
@@ -36,9 +37,9 @@ class TeacherForm(forms.Form):
         if len(last_name) > 50:
             raise forms.ValidationError("Surname should be 50 characters or less.")
 
-        birthdate = cleaned_data.get("birthdate")
-        if not re.match(r"^\d{4}-\d{2}-\d{2}$", str(birthdate)):
-            raise forms.ValidationError("Birthdate should be in the format YYYY-MM-DD.")
+        # birthdate = cleaned_data.get("birthdate")
+        # if not re.match(r"^\d{4}-\d{2}-\d{2}$", str(birthdate)):
+        #     raise forms.ValidationError("Birthdate should be in the format YYYY-MM-DD.")
 
         subject = cleaned_data.get("subject")
         if len(subject) > 50:

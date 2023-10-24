@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Teachers</title>
 </head>
 <body>
-    <h1>List of all Teachers</h1>
+    <h1>Teachers list</h1>
     <ol>
         {% for teacher in all_teachers %}
-            <li>{{ teacher.first_name }} {{ teacher.last_name }} - {{ teacher.subject }}</li>
+            <li>ID:{{ teacher.id }} - {{ teacher.first_name }} {{ teacher.last_name }} - {{ teacher.subject }}</li>
         {% endfor %}
     </ol>
 </body>
