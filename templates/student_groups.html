@@ -6,14 +6,11 @@
 </head>
 <body>
     <h1>Student_groups list</h1>
-    <ul>
         {% for student in all_student_groups %}
-            <li>Student ID:{{ student.id }} - Groups ID:
+            Student ID: {{ student.id }} --- Groups ID:
                 {% for group in student.groups.all %}
                     {{ group.id }}
-                {% endfor %}
-            </li>
+                {% endfor %}<br>
         {% endfor %}
-    </ul>
 </body>
 </html>

@@ -8,11 +8,10 @@
     <h1>Students list</h1>
     <ol>
         {% for student in all_students %}
-            <li>Student ID:{{ student.id }} - {{ student.first_name }} {{ student.last_name }} - Groups ID:
+            Student ID: {{ student.id }} --- {{ student.first_name }} {{ student.last_name }} --- Groups ID:
                     {% for group in student.groups.all %}
                         {{ group.id }}
-                    {% endfor %}
-            </li>
+                    {% endfor %}<br>
         {% endfor %}
     </ol>
 </body>

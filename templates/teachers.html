@@ -6,10 +6,8 @@
 </head>
 <body>
     <h1>Teachers list</h1>
-    <ol>
         {% for teacher in all_teachers %}
-            <li>Teacher ID:{{ teacher.id }} - {{ teacher.first_name }} {{ teacher.last_name }} - {{ teacher.subject }}</li>
+            ID: {{ teacher.id }} --- {{ teacher.first_name }} {{ teacher.last_name }} --- {{ teacher.subject }}<br>
         {% endfor %}
-    </ol>
 </body>
 </html>
