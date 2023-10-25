@@ -1,6 +1,12 @@
 from django.shortcuts import render, redirect, HttpResponse
 
-from .forms import TeacherAddForm, TeacherEditForm, GroupForm, StudentAddForm, StudentEditForm
+from .forms import (
+    TeacherAddForm,
+    TeacherEditForm,
+    GroupForm,
+    StudentAddForm,
+    StudentEditForm,
+)
 from .models import Teacher, Group, Student
 
 
@@ -32,8 +38,10 @@ def teacher_edit(request, pk=None):
     if request.method == "GET":
         if pk:
             form = TeacherEditForm(instance=teacher)
-            return render(request, "teacher_edit.html", {"form":form})
-        return HttpResponse("<h1>To edit or delete a teacher use teacher_edit/teacher_id</h1>")
+            return render(request, "teacher_edit.html", {"form": form})
+        return HttpResponse(
+            "<h1>To edit or delete a teacher use teacher_edit/teacher_id</h1>"
+        )
     form = TeacherEditForm(request.POST, instance=teacher)
     if "delete_teacher" in request.POST:
         teacher.delete()
@@ -54,14 +62,13 @@ def group_add(request):
         form = GroupForm(request.POST)
         if form.is_valid():
             group_create = Group.objects.create(
-                name=request.POST["name"],
-                curator=form.cleaned_data["curator"]
+                name=request.POST["name"], curator=form.cleaned_data["curator"]
             )
             group_create.save()
             return redirect("/groups/")
-        return render(request, "group.html", {"form": form})
+        return render(request, "group_add.html", {"form": form})
     form = GroupForm()
-    return render(request, "group.html", {"form": form})
+    return render(request, "group_add.html", {"form": form})
 
 
 def groups(request):
@@ -97,7 +104,9 @@ def student_edit(request, pk=None):
         if pk:
             form = StudentEditForm(instance=student)
             return render(request, "student_edit.html", {"form": form})
-        return HttpResponse("<h1>To edit or delete a student use student_edit/student_id</h1>")
+        return HttpResponse(
+            "<h1>To edit or delete a student use student_edit/student_id</h1>"
+        )
     form = StudentEditForm(request.POST, instance=student)
     if "delete_student" in request.POST:
         student.delete()
@@ -115,4 +124,6 @@ def students(request):
 
 def student_groups(request):
     all_student_groups = Student.objects.all()  # .values('groups')
-    return render(request, "student_groups.html", {"all_student_groups": all_student_groups})
+    return render(
+        request, "student_groups.html", {"all_student_groups": all_student_groups}
+    )

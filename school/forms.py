@@ -14,7 +14,9 @@ class TeacherAddForm(forms.Form):
     def clean_birthday(self):
         cleaned_data = self.cleaned_data.get("birthdate")
         if not re.match(r"^\d{4}-\d{2}-\d{2}$", str(cleaned_data)):
-            raise forms.ValidationError("Birthdate should be in the format \"YYYY-MM-DD\".")
+            raise forms.ValidationError(
+                'Birthdate should be in the format "YYYY-MM-DD".'
+            )
         return cleaned_data
 
     def clean(self):
@@ -25,7 +27,9 @@ class TeacherAddForm(forms.Form):
         subject = cleaned_data.get("subject")
 
         if len(first_name) > 50 or len(last_name) > 50 or len(subject) > 50:
-            raise forms.ValidationError("First name, last name and subject must be 50 characters or less.")
+            raise forms.ValidationError(
+                "First name, last name and subject must be 50 characters or less."
+            )
 
         return cleaned_data
 
@@ -36,8 +40,9 @@ class TeacherEditForm(forms.ModelForm):
         fields = ["first_name", "last_name", "birthdate", "subject"]
 
     delete_teacher = forms.BooleanField(
-        required=False, initial=False,
-        widget=forms.CheckboxInput(attrs={'class': 'delete-checkbox'}),
+        required=False,
+        initial=False,
+        widget=forms.CheckboxInput(attrs={"class": "delete-checkbox"}),
     )
 
     def clean(self):
@@ -86,7 +91,9 @@ class StudentAddForm(forms.Form):
         last_name = cleaned_data.get("last_name")
 
         if len(first_name) > 50 or len(last_name) > 50:
-            raise forms.ValidationError("First name and last name must be 50 characters or less.")
+            raise forms.ValidationError(
+                "First name and last name must be 50 characters or less."
+            )
 
         return cleaned_data
 
@@ -97,14 +104,13 @@ class StudentEditForm(forms.ModelForm):
         fields = ["first_name", "last_name", "groups"]
 
     groups = forms.ModelMultipleChoiceField(
-        queryset=Group.objects.all(),
-        label="Groups",
-        required=False
+        queryset=Group.objects.all(), label="Groups", required=False
     )
 
     delete_student = forms.BooleanField(
-        required=False, initial=False,
-        widget=forms.CheckboxInput(attrs={'class': 'delete-checkbox'}),
+        required=False,
+        initial=False,
+        widget=forms.CheckboxInput(attrs={"class": "delete-checkbox"}),
     )
 
     def clean(self):
