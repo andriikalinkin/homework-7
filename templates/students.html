@@ -8,7 +8,8 @@
     <h1>Students list</h1>
     <ol>
         {% for student in all_students %}
-            Student ID: {{ student.id }} --- {{ student.first_name }} {{ student.last_name }} --- Groups ID:
+            <a href="{% url "student edit" student.id %}">ID: {{ student.id }}</a>
+            --- {{ student.first_name }} {{ student.last_name }} --- Groups ID:
                     {% for group in student.groups.all %}
                         {{ group.id }}
                     {% endfor %}<br>

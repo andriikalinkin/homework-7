@@ -7,7 +7,9 @@
 <body>
     <h1>Teachers list</h1>
         {% for teacher in all_teachers %}
-            ID: {{ teacher.id }} --- {{ teacher.first_name }} {{ teacher.last_name }} --- {{ teacher.subject }}<br>
+            <a href="{% url "teacher edit" teacher.id %}">ID: {{ teacher.id }}</a>
+            --- {{ teacher.first_name }} {{ teacher.last_name }} --- {{ teacher.subject }}<br>
         {% endfor %}
 </body>
 </html>
+

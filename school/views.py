@@ -80,12 +80,12 @@ def student_add(request):
     if request.method == "POST":
         form = StudentAddForm(request.POST)
         if form.is_valid():
-            student_create = Student.objects.create(
-                first_name=request.POST["first_name"],
-                last_name=request.POST["last_name"],
-                group=request.POST["group"],
-            )
-            student_create.save()
+            first_name = form.cleaned_data["first_name"]
+            last_name = form.cleaned_data["last_name"]
+            group = form.cleaned_data["groups"]
+            student = Student.objects.create(first_name=first_name, last_name=last_name)
+            student.groups.set([group])
+            student.save()
             return redirect("students")
         return render(request, "student_add.html", {"form": form})
     form = StudentAddForm()
