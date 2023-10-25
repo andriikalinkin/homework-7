@@ -8,7 +8,7 @@
     <h1>Groups list</h1>
     <ol>
         {% for group in all_groups %}
-            <li>{{ group.name }} - {{ group.curator.first_name }} {{ group.curator.last_name }}</li>
+            <li>Group ID:{{ group.id }} - {{ group.name }} - {{ group.curator.first_name }} {{ group.curator.last_name }}</li>
         {% endfor %}
     </ol>
 </body>

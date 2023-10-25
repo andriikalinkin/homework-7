@@ -77,6 +77,7 @@ class GroupForm(forms.Form):
 class StudentAddForm(forms.Form):
     first_name = forms.CharField(label="First name")
     last_name = forms.CharField(label="Last name")
+    group = forms.ModelChoiceField(label="Group", queryset=Group.objects.all())
 
     def clean(self):
         cleaned_data = super().clean()
@@ -93,7 +94,13 @@ class StudentAddForm(forms.Form):
 class StudentEditForm(forms.ModelForm):
     class Meta:
         model = Teacher
-        fields = ["first_name", "last_name"]
+        fields = ["first_name", "last_name", "groups"]
+
+    groups = forms.ModelMultipleChoiceField(
+        queryset=Group.objects.all(),
+        label="Groups",
+        required=False
+    )
 
     delete_student = forms.BooleanField(
         required=False, initial=False,

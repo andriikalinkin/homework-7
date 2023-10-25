@@ -76,6 +76,7 @@ def student_add(request):
             student_create = Student.objects.create(
                 first_name=request.POST["first_name"],
                 last_name=request.POST["last_name"],
+                group=request.POST["group"],
             )
             student_create.save()
             return redirect("students")
@@ -112,5 +113,6 @@ def students(request):
     return render(request, "students.html", {"all_students": all_students})
 
 
-def student_and_groups(request):
-    pass
+def student_groups(request):
+    all_student_groups = Student.objects.all()  # .values('groups')
+    return render(request, "student_groups.html", {"all_student_groups": all_student_groups})

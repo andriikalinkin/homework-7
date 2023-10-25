@@ -16,5 +16,5 @@ urlpatterns = [
     path("student_edit/<int:pk>", views.student_edit, name="student edit"),
     path("students/", views.students, name="students"),
 
-    path("student_and_groups", views.student_and_groups, name="student and groups")
+    path("student_groups/", views.student_groups, name="student and groups")
 ]
