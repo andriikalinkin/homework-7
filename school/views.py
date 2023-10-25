@@ -1,12 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 
-from .forms import TeacherAddEditForm, TeacherDeleteForm, GroupForm, StudentAddEditForm, StudentDeleteForm
+from .forms import TeacherAddForm, TeacherEditForm, GroupForm, StudentAddForm, StudentEditForm
 from .models import Teacher, Group, Student
 
 
 def teacher_add(request):
     if request.method == "POST":
-        form = TeacherAddEditForm(request.POST)
+        form = TeacherAddForm(request.POST)
         if form.is_valid():
             teacher_create = Teacher.objects.create(
                 first_name=request.POST["first_name"],
@@ -15,34 +15,33 @@ def teacher_add(request):
                 subject=request.POST["subject"],
             )
             teacher_create.save()
-            return redirect("students")
+            return redirect("teachers")
         return render(request, "teacher_add.html", {"form": form})
-    form = TeacherAddEditForm()
+    form = TeacherAddForm()
     return render(request, "teacher_add.html", {"form": form})
 
 
-def teacher_edit(request, pk):
-    teacher = Teacher.objects.get(pk=pk)
+def teacher_edit(request, pk=None):
+    teacher = None
+
+    try:
+        teacher = Teacher.objects.get(pk=pk)
+    except Teacher.DoesNotExist:
+        pass
+
     if request.method == "GET":
-        form = TeacherAddEditForm(instance=teacher)
-        return render(request, "teacher_edit.html", {"form": form})
-    form = TeacherAddEditForm(request.POST, instance=teacher)
+        if pk:
+            form = TeacherEditForm(instance=teacher)
+            return render(request, "teacher_edit.html", {"form":form})
+        return HttpResponse("<h1>To edit or delete a teacher use teacher_edit/teacher_id</h1>")
+    form = TeacherEditForm(request.POST, instance=teacher)
+    if "delete_teacher" in request.POST:
+        teacher.delete()
+        return redirect("teachers")
     if form.is_valid():
         form.save()
         return redirect("teachers")
     return render(request, "teacher_edit.html", {"form": form})
-
-
-def teacher_delete(request):
-    if request.method == "POST":
-        form = TeacherDeleteForm(request.POST)
-        if form.is_valid():
-            teacher = Teacher.objects.get(pk=request.POST["teacher_id"])
-            teacher.delete()
-            return redirect("teachers")
-        return render(request, "teacher_delete.html", {"form": form})
-    form = TeacherDeleteForm()
-    return render(request, "teacher_delete.html", {"form": form})
 
 
 def teachers(request):
@@ -72,7 +71,7 @@ def groups(request):
 
 def student_add(request):
     if request.method == "POST":
-        form = StudentAddEditForm(request.POST)
+        form = StudentAddForm(request.POST)
         if form.is_valid():
             student_create = Student.objects.create(
                 first_name=request.POST["first_name"],
@@ -81,34 +80,37 @@ def student_add(request):
             student_create.save()
             return redirect("students")
         return render(request, "student_add.html", {"form": form})
-    form = TeacherAddEditForm()
+    form = StudentAddForm()
     return render(request, "student_add.html", {"form": form})
 
 
-def student_edit(request, pk):
-    student = Student.objects.get(pk=pk)
+def student_edit(request, pk=None):
+    student = None
+
+    try:
+        student = Student.objects.get(pk=pk)
+    except Student.DoesNotExist:
+        pass
+
     if request.method == "GET":
-        form = StudentAddEditForm(instance=student)
-        return render(request, "student_edit.html", {"form": form})
-    form = StudentAddEditForm(request.POST, instance=student)
+        if pk:
+            form = StudentEditForm(instance=student)
+            return render(request, "student_edit.html", {"form": form})
+        return HttpResponse("<h1>To edit or delete a student use student_edit/student_id</h1>")
+    form = StudentEditForm(request.POST, instance=student)
+    if "delete_student" in request.POST:
+        student.delete()
+        return redirect("students")
     if form.is_valid():
         form.save()
         return redirect("students")
     return render(request, "student_edit.html", {"form": form})
 
 
-def student_delete(request):
-    if request.method == "POST":
-        form = StudentDeleteForm(request.POST)
-        if form.is_valid():
-            student = Student.objects.get(pk=request.POST["student_id"])
-            student.delete()
-            return redirect("students")
-        return render(request, "student_delete.html", {"form": form})
-    form = StudentDeleteForm()
-    return render(request, "student_delete.html", {"form": form})
-
-
 def students(request):
     all_students = Student.objects.all()
     return render(request, "students.html", {"all_students": all_students})
+
+
+def student_and_groups(request):
+    pass
