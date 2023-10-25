@@ -5,6 +5,11 @@
     <title>Students</title>
 </head>
 <body>
-
+    <h1>Students list</h1>
+    <ol>
+        {% for student in all_students %}
+            <li>ID:{{ student.id }} - {{ student.first_name }} {{ student.last_name }}</li>
+        {% endfor %}
+    </ol>
 </body>
 </html>

@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Teacher, Group
+from .models import Teacher, Group, Student
 
 
 class TeacherAddEditForm(forms.ModelForm):
@@ -13,11 +13,11 @@ class TeacherAddEditForm(forms.ModelForm):
 
         first_name = cleaned_data.get("first_name")
         if len(first_name) > 50:
-            raise forms.ValidationError("Name should be 50 characters or less.")
+            raise forms.ValidationError("First name should be 50 characters or less.")
 
         last_name = cleaned_data.get("last_name")
         if len(last_name) > 10:
-            raise forms.ValidationError("Surname should be 50 characters or less.")
+            raise forms.ValidationError("Last name should be 50 characters or less.")
 
         subject = cleaned_data.get("subject")
         if len(subject) > 50:
@@ -39,16 +39,8 @@ class TeacherDeleteForm(forms.Form):
 
 
 class GroupForm(forms.Form):
-    name = forms.CharField(
-        label="Name:",
-        widget=forms.TextInput(attrs={"placeholder": "Name"}),
-    )
-
-    curator = forms.ModelChoiceField(
-        label="Curator:",
-        queryset=Teacher.objects.all(),
-        widget=forms.Select(attrs={"class": "form-control"}),
-    )
+    name = forms.CharField(label="Name:")
+    curator = forms.ModelChoiceField(label="Curator:", queryset=Teacher.objects.all())
 
     def clean(self):
         cleaned_data = super().clean()
@@ -59,4 +51,35 @@ class GroupForm(forms.Form):
         if name in Group.objects.values_list("name", flat=True):
             raise forms.ValidationError("This group already exists.")
 
+        return cleaned_data
+
+
+class StudentAddEditForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = ["first_name", "last_name"]
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        first_name = cleaned_data.get("first_name")
+        if len(first_name) > 50:
+            raise forms.ValidationError("First name should be 50 characters or less.")
+
+        last_name = cleaned_data.get("last_name")
+        if len(last_name) > 10:
+            raise forms.ValidationError("Last name should be 50 characters or less.")
+
+        return cleaned_data
+
+
+class StudentDeleteForm(forms.Form):
+    students_id = forms.CharField(label="Student's ID:")
+
+    def clean_student_id(self):
+        cleaned_data = self.cleaned_data.get("student_id")
+        if not cleaned_data.isdigit():
+            raise forms.ValidationError("Use int() only.")
+        if not Student.objects.filter(id=cleaned_data).exists():
+            raise forms.ValidationError("Invalid ID.")
         return cleaned_data
